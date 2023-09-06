@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/Users/brynnjknight/projects/btdAPI'
+let g:netrw_dirhist_4='/Users/brynnjknight/projects/btdAPI/routes'
+let g:netrw_dirhist_3='/Users/brynnjknight/projects/btdAPI'
+let g:netrw_dirhist_2='/Users/brynnjknight/projects/btdAPI/routes'
+let g:netrw_dirhist_1='/Users/brynnjknight/projects/btdAPI'
+let g:netrw_dirhist_0='/Users/brynnjknight/projects/btdAPI/routes'
+let g:netrw_dirhist_9='/Users/brynnjknight/projects/btdAPI/routes/auth'
+let g:netrw_dirhist_8='/Users/brynnjknight/projects/btdAPI/routes'
+let g:netrw_dirhist_7='/Users/brynnjknight/projects/btdAPI'
+let g:netrw_dirhist_6='/Users/brynnjknight/projects/btdAPI/routes'

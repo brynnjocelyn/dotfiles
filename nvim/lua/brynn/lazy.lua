@@ -23,7 +23,7 @@ require("lazy").setup({
 	{ import = "brynn.plugins.lsp" }, -- Load LSP
 }, {
 	install = {
-		colorscheme = { "nightfly" }, -- Load colorscheme
+		colorscheme = { "gruvbox" }, -- Load colorscheme
 	},
 	checker = {
 		enabled = true, -- Enable checker

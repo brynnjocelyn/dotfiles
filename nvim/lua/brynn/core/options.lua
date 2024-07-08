@@ -37,3 +37,6 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.iskeyword:append("-")
+
+-- set fold column colors
+opt.foldcolumn = "auto:3" -- set fold column to 3 characters wide

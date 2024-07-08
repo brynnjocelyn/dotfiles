@@ -5,10 +5,13 @@ syntax enable " enable syntax highlighting
 set showmatch " show matching brackets/parentheses 
 
 " Set native file explore to tree style
-" let g:netrw_liststyle = 3
+" vim.g:netrw_liststyle = 3
 
 " Exit insert mode with 'jk'
-" keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk"})
+inoremap jk <ESC>
+
+" Test exiting insert mode with 'jj'
+inoremap jj <ESC>
 
 " Indentation Settings
 set expandtab " use spaces instead of tabs 

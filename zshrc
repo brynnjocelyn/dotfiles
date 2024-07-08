@@ -144,3 +144,7 @@ function cd() {
 function ..() {
     builtin cd .. && la # List all files in the directory after changing directory using ..
 }
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

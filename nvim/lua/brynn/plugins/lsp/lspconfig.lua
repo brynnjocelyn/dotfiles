@@ -69,6 +69,10 @@ return {
 			-- Remove unused imports keybind
 			opts.desc = "Remove unused imports"
 			keymap.set("n", "<leader>ru", ":TSToolsRemoveUnused<CR>", opts)
+
+			-- Add missing imports keybind
+			opts.desc = "Add missing imports"
+			keymap.set("n", "<leader>ai", ":TSToolsAddMissing<CR>", opts)
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
@@ -89,16 +93,31 @@ return {
 		})
 
 		-- configure typescript server with plugin
-		--[[ lspconfig["tsserver"].setup({
+		lspconfig["tsserver"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
-		}) ]]
+		})
 
 		-- configure typescript server with plugin
 		require("typescript-tools").setup({
 			server = {
 				capabilities = capabilities,
 				on_attach = on_attach,
+				settings = {
+					tsserver_file_preferences = {
+						disableSuggestions = true,
+					},
+					typescript = {
+						tsconfig = "tsconfig.json",
+						eslint = true,
+						prettier = true,
+						importCost = true,
+						codeActions = {
+							organizeImports = true,
+							fixAll = true,
+						},
+					},
+				},
 			},
 		})
 

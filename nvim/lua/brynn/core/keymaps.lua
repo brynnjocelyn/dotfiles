@@ -7,16 +7,29 @@ local keymap = vim.keymap -- for conciseness
 -- General Keymaps -------------------
 
 -- show keymaps
-keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymaps" })
+keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymaps" }) -- show keymaps
 
--- use jk to exit insert mode
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+-- lazy management
+keymap.set("n", "<leader>lu", "<cmd>Lazy update<CR>", { desc = "Update Lazy Plugins" }) -- update lazy plugins
+keymap.set("n", "<leader>li", "<cmd>Lazy install<CR>", { desc = "Install Lazy Plugins" }) -- install lazy plugins
+
+-- source files. Useful for reloading to update changes made to the Neovim config
+keymap.set("n", "<leader>so", "<cmd>luafile ~/.config/nvim/init.lua<CR>", { desc = "Source init.lua" }) -- source init.lua NOT SURE HOW OR IF THIS WORKS
+keymap.set("n", "<leader>rl", "<cmd>so<CR>", { desc = "Source/Reload the current file" }) -- source/reload the current file
+
+-- change mode keymaps
+keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" }) -- use jk to exit insert mode
+keymap.set("i", "jj", "<ESC>", { desc = "Exit insert mode with jj" }) -- use jj to exit insert mode
+
+-- navigation remaps
+keymap.set({ "n", "v" }, "H", "^", { desc = "Go to start of line" }) -- go to start of line
+keymap.set({ "n", "v" }, "L", "$", { desc = "Go to end of line" }) -- go to end of line
 
 -- clear search highlights
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" }) -- clear search highlights
 
 -- delete single character without copying into register
-keymap.set("n", "x", '"_x')
+keymap.set("n", "x", '"_x') -- delete single character without copying into register
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
@@ -66,7 +79,7 @@ keymap.set("n", "<leader>gp", "<cmd>Telescope git_patches<CR>", { desc = "Git pa
 keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "Restart LSP" }) -- restart LSP
 keymap.set("n", "<leader>ca", "<cmd>Telescope lsp_code_actions<CR>", { desc = "Code actions" }) -- code actions
 keymap.set({ "n", "v" }, "<leader>ca", "<cmd>Telescope lsp_range_code_actions<CR>", { desc = "Code actions (visual)" }) -- code actions (visual)
-keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", { desc = "Show LSP references" }) -- show definition, references
+keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", { desc = "Show LSP references" }) -- goto/show definition, references
 keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { desc = "Go to declaration" }) -- go to declaration
 keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Show LSP definitions" }) -- show lsp definitions
 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", { desc = "Show LSP implementations" }) -- show lsp implementations
@@ -104,6 +117,5 @@ keymap.set("n", "<leader>uu", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undotr
 -- prettier
 keymap.set("n", "<leader>pp", "<cmd>Prettier<CR>", { desc = "Prettier" }) -- prettier
 
--- keymap popup
--- local keymap_popup = require("brynn.plugins.keymap-popup")
--- keymap.set("n", "<leader>?", keymap_popup.show_keymaps, { desc = "Show keymaps" }) -- show keymaps
+-- markdown preview
+keymap.set("n", "<leader>mp", "<cmd>MarkdownPreview<CR>", { desc = "Markdown preview" }) -- markdown preview

@@ -225,5 +225,17 @@ return {
 				},
 			},
 		})
+
+		-- configure mdx server
+		lspconfig["mdx_analyzer"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		-- configure marksman server
+		lspconfig["marksman"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 	end,
 }

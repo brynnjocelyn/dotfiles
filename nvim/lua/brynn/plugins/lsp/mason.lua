@@ -26,7 +26,7 @@ return {
 		})
 
 		mason_lspconfig.setup({
-			-- list of servers for mason to install
+			-- list of lsp servers for mason to install
 			ensure_installed = {
 				"tsserver",
 				"html",
@@ -40,6 +40,8 @@ return {
 				"pyright",
 				"angularls",
 				"gopls",
+				"mdx_analyzer",
+				"marksman",
 			},
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
@@ -48,6 +50,7 @@ return {
 		mason_null_ls.setup({
 			-- list of formatters & linters for mason to install
 			ensure_installed = {
+				"markdownlint", -- markdown linter
 				"prettier", -- ts/js formatter
 				"stylua", -- lua formatter
 				"eslint_d", -- ts/js linter

@@ -30,6 +30,7 @@ return {
 					"css",
 					"prisma",
 					"markdown",
+					"mdx",
 					"markdown_inline",
 					"svelte",
 					"graphql",
@@ -39,11 +40,23 @@ return {
 					"dockerfile",
 					"gitignore",
 				},
+
 				-- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
 				require("ts_context_commentstring").setup({}),
+
 				-- auto install above language parsers
 				auto_install = true,
 			})
+			-- use 'markdown' parser for 'mdx' files
+			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			parser_config.mdx = {
+				install_info = {
+					url = "https://github.com/tree-sitter-grammars/tree-sitter-markdown.git",
+					files = { "src/parser.c", "src/scanner.c" },
+					branch = "main",
+				},
+				filetype = "mdx",
+			}
 		end,
 	},
 }

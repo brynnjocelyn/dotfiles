@@ -2,6 +2,6 @@
 vim.filetype.add({
 	extension = {
 		md = "markdown",
-		mdx = "markdown.mdx",
+		mdx = "mdx",
 	},
 })

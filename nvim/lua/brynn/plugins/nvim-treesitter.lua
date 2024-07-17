@@ -8,10 +8,10 @@ return {
 		},
 		config = function()
 			-- import nvim-treesitter plugin
-			local treesitter = require("nvim-treesitter.configs")
+			local configs = require("nvim-treesitter.configs")
 
 			-- configure treesitter
-			treesitter.setup({ -- enable syntax highlighting
+			configs.setup({ -- enable syntax highlighting
 				highlight = {
 					enable = true,
 				},
@@ -21,24 +21,24 @@ return {
 				autotag = { enable = true },
 				-- ensure these language parsers are installed
 				ensure_installed = {
-					"json",
-					"javascript",
-					"typescript",
-					"tsx",
-					"yaml",
-					"html",
-					"css",
-					"prisma",
-					"markdown",
-					"mdx",
-					"markdown_inline",
-					"svelte",
-					"graphql",
 					"bash",
-					"lua",
-					"vim",
+					"css",
 					"dockerfile",
 					"gitignore",
+					"graphql",
+					"html",
+					"javascript",
+					"json",
+					"lua",
+					"markdown",
+					"markdown_inline",
+					"mdx",
+					"prisma",
+					"svelte",
+					"tsx",
+					"typescript",
+					"vim",
+					"yaml",
 				},
 
 				-- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
@@ -48,7 +48,14 @@ return {
 				auto_install = true,
 			})
 			-- use 'markdown' parser for 'mdx' files
+			local ft_to_parser = require("nvim-treesitter.parsers").ft_to_lang("mdx")
+			print("ft_to_parser result => ", ft_to_parser)
+
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			-- print("parser_config => ", parser_config)
+			--[[ for k, v in pairs(parser_config) do
+				print(k, v)
+			end ]]
 			parser_config.mdx = {
 				install_info = {
 					url = "https://github.com/tree-sitter-grammars/tree-sitter-markdown.git",

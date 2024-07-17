@@ -119,3 +119,6 @@ keymap.set("n", "<leader>pp", "<cmd>Prettier<CR>", { desc = "Prettier" }) -- pre
 
 -- markdown preview
 keymap.set("n", "<leader>mp", "<cmd>MarkdownPreview<CR>", { desc = "Markdown preview" }) -- markdown preview
+
+-- tailwindcss sorter
+keymap.set("n", "<leader>ts", "<cmd>TailwindSort<CR>", { desc = "Sort tailwindcss classes" }) -- sort tailwindcss classes

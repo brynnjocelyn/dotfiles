@@ -46,3 +46,6 @@ opt.iskeyword:append("-")
 
 -- set fold column colors
 opt.foldcolumn = "auto:3" -- set fold column to 3 characters wide
+
+-- conceal level
+opt.conceallevel = 2 -- conceal text with concealable characters

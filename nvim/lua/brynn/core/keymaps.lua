@@ -6,6 +6,9 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps -------------------
 
+-- unbind "n" keymaps in normal mode
+-- keymap.del("n", "n") -- unbind "n" keymap
+
 -- show keymaps
 keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymaps" }) -- show keymaps
 

@@ -13,18 +13,26 @@ inoremap jk <ESC>
 " Test exiting insert mode with 'jj'
 inoremap jj <ESC>
 
+" Change cursor in insert mode
+highlight Cursor guifg=white guibg=black
+highlight iCursor guifg=white guibg=steelblue
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
+
 " Indentation Settings
-set expandtab " use spaces instead of tabs 
+set expandtab " use spaces instead of tabs
 set tabstop=4
 set shiftwidth=4
 
-" UI Settings 
+" UI Settings
 set laststatus=2 " always show status bar
 set wrap " wrap long lines
 set encoding=utf-8
 
 " Vundle Plugin Manager Settings
-set nocompatible " ensures VI is not used instead of VIM: required for Vundle 
+set nocompatible " ensures VI is not used instead of VIM: required for Vundle
 filetype off " required for Vundle
 
 " Set runtime path for Vim plugins
@@ -40,8 +48,8 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'morhetz/gruvbox'
 
-call vundle#end() 
-filetype plugin indent on 
+call vundle#end()
+filetype plugin indent on
 set t_Co=256
 syntax on
 " Colorscheme

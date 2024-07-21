@@ -32,6 +32,13 @@ return {
 		min_chars = 2,
 	},
 
+	-- Define templates for new files.
+	templates = {
+		folder = "~/obsidian/brain-vault/templates",
+		date_format = "%Y-%m-%d-%a",
+		time_format = "%H:%M",
+	},
+
 	-- Optional: specify the workspace directories
 	opts = {
 		workspaces = {

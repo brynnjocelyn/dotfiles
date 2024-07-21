@@ -32,7 +32,6 @@ return {
 					"lua",
 					"markdown",
 					"markdown_inline",
-					"mdx",
 					"prisma",
 					"svelte",
 					"tsx",
@@ -49,7 +48,7 @@ return {
 			})
 			-- use 'markdown' parser for 'mdx' files
 			local ft_to_parser = require("nvim-treesitter.parsers").ft_to_lang("mdx")
-			print("ft_to_parser result => ", ft_to_parser)
+			-- print("ft_to_parser result => ", ft_to_parser)
 
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 			-- print("parser_config => ", parser_config)

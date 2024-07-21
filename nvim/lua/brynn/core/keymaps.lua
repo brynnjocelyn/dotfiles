@@ -122,3 +122,9 @@ keymap.set("n", "<leader>mp", "<cmd>MarkdownPreview<CR>", { desc = "Markdown pre
 
 -- tailwindcss sorter
 keymap.set("n", "<leader>ts", "<cmd>TailwindSort<CR>", { desc = "Sort tailwindcss classes" }) -- sort tailwindcss classes
+
+-- obsidian note taking
+keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "New Obsidian note" }) -- new obsidian note
+keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open Obsidian note" }) -- open obsidian note
+keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Obsidian notes" }) -- search obsidian notes
+keymap.set("n", "<leader>ot", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Obsidian Template" }) -- insert obsidian template

@@ -46,15 +46,9 @@ return {
 				-- auto install above language parsers
 				auto_install = true,
 			})
-			-- use 'markdown' parser for 'mdx' files
-			local ft_to_parser = require("nvim-treesitter.parsers").ft_to_lang("mdx")
-			-- print("ft_to_parser result => ", ft_to_parser)
 
+			-- use 'markdown' parser for 'mdx' files
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			-- print("parser_config => ", parser_config)
-			--[[ for k, v in pairs(parser_config) do
-				print(k, v)
-			end ]]
 			parser_config.mdx = {
 				install_info = {
 					url = "https://github.com/tree-sitter-grammars/tree-sitter-markdown.git",

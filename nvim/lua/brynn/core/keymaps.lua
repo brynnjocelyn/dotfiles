@@ -12,6 +12,10 @@ local keymap = vim.keymap -- for conciseness
 -- show keymaps
 keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymaps" }) -- show keymaps
 
+-- quit keymaps
+keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" }) -- quit
+keymap.set("n", "<leader>qq", "<cmd>qall<CR>", { desc = "Quit all" }) -- quit all
+
 -- lazy management
 keymap.set("n", "<leader>lu", "<cmd>Lazy update<CR>", { desc = "Update Lazy Plugins" }) -- update lazy plugins
 keymap.set("n", "<leader>li", "<cmd>Lazy install<CR>", { desc = "Install Lazy Plugins" }) -- install lazy plugins

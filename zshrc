@@ -74,6 +74,7 @@ COMPLETION_WAITING_DOTS="true"
 
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -114,6 +115,8 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 # Add python to the path
 export PATH="/opt/homebrew/opt/python@3.11/libexec/bin:$PATH"
+# Add WezTerm to the path
+export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -156,5 +159,19 @@ function ..() {
 # Load Angular CLI autocompletion.
 source <(ng completion script)
 
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# zsh history configuration
+HISTFILE=$HOME/.zhistory
+HISTSIZE=1000 # keep 1000 lines of history in memory
+SAVEHIST=999 # save 999 lines of history
+setopt share_history # share command history data between all sessions
+setopt hist_expire_dups_first # expire duplicate entries first when trimming history
+setopt hist_ignore_dups # ignore duplicate entries when adding to history
+setopt hist_verify # don't execute immediately upon history expansion
+
+# completion using arrow keys (based on history)
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward

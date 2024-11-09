@@ -13,6 +13,13 @@ inoremap jk <ESC>
 " Test exiting insert mode with 'jj'
 inoremap jj <ESC>
 
+" Map Shift + L to move to the end of the line in normal mode
+nnoremap L $
+
+" Map Shift + H to move to the start of the line in normal mode
+nnoremap H ^
+
+
 " Change cursor in insert mode
 highlight Cursor guifg=white guibg=black
 highlight iCursor guifg=white guibg=steelblue

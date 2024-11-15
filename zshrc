@@ -88,10 +88,10 @@ fi
 
 # Custom cd and .. commands
 function cd() {
-  builtin cd "$@" && ls -a # List all files after cd
+  builtin cd "$@" && ls -al # List all files after cd
 }
 function ..() {
-  builtin cd .. && ls -a # List all files after ..
+  builtin cd .. && ls -al # List all files after ..
 }
 
 # Powerlevel10k configuration
@@ -107,3 +107,10 @@ setopt share_history hist_expire_dups_first hist_ignore_dups hist_verify
 bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 
+#ALIAS
+alias gst="git status"
+alias gco="git checkout"
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+zstyle ':completion:*' menu select

@@ -110,6 +110,8 @@ bindkey '^[[B' history-beginning-search-forward
 #ALIAS
 alias gst="git status"
 alias gco="git checkout"
+alias gaa="git add --all"
+alias gus="git restore --staged" #Git Unstage followed by file name(s)
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 

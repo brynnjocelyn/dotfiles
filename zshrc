@@ -113,6 +113,8 @@ alias gco="git checkout"
 alias gaa="git add --all"
 alias gus="git restore --staged" #Git Unstage followed by file name(s)
 
+alias ssha="eval $(ssh-agent) && ssh-add"
+
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 zstyle ':completion:*' menu select

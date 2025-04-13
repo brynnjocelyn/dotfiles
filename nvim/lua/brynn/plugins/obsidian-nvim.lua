@@ -24,6 +24,9 @@ return {
 		-- see below for full list of optional dependencies 👇
 	},
 
+  -- Optional, override the default behavior of opening a file when clicking on it in the index.
+  ui = { enable = false },
+
 	-- Optional, completion of wiki links, local markdown files, and tags using nvim-cmp.
 	completion = {
 		-- Set to false to disable completion.

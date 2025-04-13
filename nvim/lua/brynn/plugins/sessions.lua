@@ -9,10 +9,14 @@ return {
 				theme_conf = { border = true },
 				previewer = false,
 			},
+      suppressed_dirs = { "~/", "~/projects", "~/Downloads", "/" },
 			-- Set mapping for searching a session.
 			vim.keymap.set("n", "<Leader>ls", require("auto-session.session-lens").search_session, {
 				noremap = true,
 			}),
 		})
+    -- Set session options
+    vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 	end,
 }

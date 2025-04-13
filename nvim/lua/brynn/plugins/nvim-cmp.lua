@@ -9,7 +9,7 @@ return {
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
   },
-  config = function()
+    config = function()
     local cmp = require("cmp")
 
     local luasnip = require("luasnip")
@@ -40,6 +40,7 @@ return {
       -- sources for autocompletion
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
+        { name = "copilot" }, -- Added Copilot here
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths

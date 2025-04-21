@@ -9,6 +9,9 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Ensure UTF-8
+export LANG=en_US.UTF-8
+
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
@@ -118,3 +121,6 @@ alias ssha="eval $(ssh-agent) && ssh-add"
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 zstyle ':completion:*' menu select
+export PATH=$PATH:$HOME/go/bin
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

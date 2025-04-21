@@ -63,6 +63,7 @@ return {
         "jsonlint", -- json linter
         "ansible-lint", -- ansible linter
         "hadolint", -- dockerfile linter"
+        "luacheck", -- lua linter
       },
     })
   end,

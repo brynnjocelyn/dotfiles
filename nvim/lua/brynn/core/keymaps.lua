@@ -15,6 +15,12 @@ keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymap
 -- quit keymaps
 keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" }) -- quit
 keymap.set("n", "<leader>qq", "<cmd>qall<CR>", { desc = "Quit all" }) -- quit all
+keymap.set("n", "<leader>q!", "<cmd>qa!<CR>", { desc = "Quit without saving" }) -- quit without saving
+keymap.set("n", "<leader>q!", "<cmd>wq<CR>", { desc = "Write and quit" }) -- write and quit
+
+-- save keymaps
+keymap.set("n", "<leader>ww", "<cmd>w<CR>", { desc = "Save" }) -- save
+keymap.set("n", "<leader>wa", "<cmd>wa<CR>", { desc = "Save all" }) -- save all
 
 -- lazy management
 keymap.set("n", "<leader>lu", "<cmd>Lazy update<CR>", { desc = "Update Lazy Plugins" }) -- update lazy plugins
@@ -94,22 +100,22 @@ keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Show 
 keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Smart rename" }) -- smart rename
 keymap.set("n", "<leader>D", "<cmd>Telescope lsp_workspace_diagnostics<CR>", { desc = "Show buffer diagnostics" }) -- show  diagnostics for file
 keymap.set(
-	"n",
-	"<leader>d",
-	"<cmd>lua vim.diagnostic.open_float(0, { scope = 'line' })<CR>",
-	{ desc = "Show line diagnostics" }
+  "n",
+  "<leader>d",
+  "<cmd>lua vim.diagnostic.open_float(0, { scope = 'line' })<CR>",
+  { desc = "Show line diagnostics" }
 ) -- show diagnostics for line
 keymap.set(
-	"n",
-	"[d",
-	"<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<CR>",
-	{ desc = "Go to previous diagnostic" }
+  "n",
+  "[d",
+  "<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<CR>",
+  { desc = "Go to previous diagnostic" }
 ) -- jump to previous diagnostic in buffer
 keymap.set(
-	"n",
-	"]d",
-	"<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<CR>",
-	{ desc = "Go to next diagnostic" }
+  "n",
+  "]d",
+  "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<CR>",
+  { desc = "Go to next diagnostic" }
 ) -- jump to next diagnostic in buffer
 keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Show documentation for what is under cursor" }) -- show documentation for what is under cursor
 

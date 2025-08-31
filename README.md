@@ -54,20 +54,53 @@ This repository contains configuration files for my development setup:
 
 ## 🚀 Installation
 
+### Quick Installation (macOS/Linux)
+
 1. Clone this repository:
    ```bash
-   git clone https://github.com/brynnjocelyn/dotfiles.git ~/.dotfiles
+   git clone https://github.com/brynnjocelyn/dotfiles.git ~/dotfiles
    ```
 
 2. Create symbolic links:
    ```bash
-   ln -s ~/.dotfiles/zshrc ~/.zshrc
-   ln -s ~/.dotfiles/tmux.conf ~/.tmux.conf
-   ln -s ~/.dotfiles/nvim ~/.config/nvim
-   ln -s ~/.dotfiles/wezterm ~/.config/wezterm
-   ln -s ~/.dotfiles/vimrc ~/.vimrc
-   ln -s ~/.dotfiles/taskrc ~/.taskrc
+   ln -s ~/dotfiles/zshrc ~/.zshrc
+   ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
+   ln -s ~/dotfiles/nvim ~/.config/nvim
+   ln -s ~/dotfiles/wezterm ~/.config/wezterm
+   ln -s ~/dotfiles/vimrc ~/.vimrc
+   ln -s ~/dotfiles/taskrc ~/.taskrc
    ```
+
+### 🐧 Debian/Ubuntu Setup
+
+For a complete development environment setup on Debian/Ubuntu systems:
+
+#### Option 1: Automated Installation
+```bash
+# Clone dotfiles first
+git clone https://github.com/brynnjocelyn/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Run automated setup script
+./setup-debian.sh
+```
+
+#### Option 2: Manual Installation
+Follow the comprehensive step-by-step guide in [`DEBIAN_SETUP_GUIDE.md`](DEBIAN_SETUP_GUIDE.md) for detailed manual installation instructions.
+
+The automated script installs all dependencies including:
+- Neovim (latest), Tmux, Zsh with Oh-My-Zsh
+- Node.js via nvm, Python 3, Go
+- Essential tools: ripgrep, fd-find, fzf, LazyGit
+- Nerd Fonts (MesloLGS)
+- All LSP servers, formatters, and linters
+- Proper symlink setup for all dotfiles
+
+#### Verification
+After installation, run the verification script:
+```bash
+~/verify-setup.sh
+```
 
 ## 🖥️ Development Environment
 

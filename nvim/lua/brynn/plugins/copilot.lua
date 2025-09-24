@@ -55,7 +55,7 @@ return {
           trace_lsp_progress = false,
           log_lsp_messages = false,
         },
-        copilot_node_command = vim.fn.expand("$HOME/.nvm/versions/node/v20.11.1/bin/node"), -- Ensure Node.js > 20; update path if using nvm
+        copilot_node_command = "node", -- Use node from PATH
         workspace_folders = {}, -- Add paths like "/home/user/projects" if needed
         copilot_model = "", -- Default is gpt-35-turbo; set to "gpt-4o-copilot" if desired
         root_dir = function()

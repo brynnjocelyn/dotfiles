@@ -101,6 +101,31 @@ function ..() {
   builtin cd .. && ls -al # List all files after ..
 }
 
+# SSH wrapper function for tmux pane name switching
+# Function to handle SSH and update tmux pane name automatically
+ssh() {
+    # Check if we're in tmux
+    if [[ -n "$TMUX" ]]; then
+        # Save current pane title
+        local old_name=$(tmux display-message -p '#{pane_title}')
+        
+        # Extract hostname from SSH command (handles user@host and host formats)
+        local ssh_host=$(echo "$@" | grep -oE '([^@\s]+@)?[^@\s]+(\s|$)' | head -1 | sed 's/.*@//; s/[[:space:]]*$//')
+        
+        # Set pane title to hostname
+        tmux select-pane -T "$ssh_host"
+        
+        # Run SSH command
+        command ssh "$@"
+        
+        # Restore original pane title after SSH exits
+        tmux select-pane -T "$old_name"
+    else
+        # Not in tmux, just run SSH normally
+        command ssh "$@"
+    fi
+}
+
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -131,8 +156,17 @@ export PATH="$HOME/bin:$PATH"
 export PATH=$PATH:$HOME/go/bin
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 # Python environment management with pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# Claude Code configuration
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=32000
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/brynnjknight/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

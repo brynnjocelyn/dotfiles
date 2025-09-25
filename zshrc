@@ -84,9 +84,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 fi
 
-# Auto attach to tmux session
-if [ -z "$TMUX" ]; then
-  tmux attach-session -t default || tmux new-session -s default
+# Auto attach to tmux session (macOS only)
+# Only auto-launch on macOS to avoid nested tmux sessions when SSHing from Mac to Linux servers.
+# Nested tmux sessions cause issues with copy/paste and keybinding contexts.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if [ -z "$TMUX" ]; then
+    tmux attach-session -t default || tmux new-session -s default
+  fi
 fi
 
 # Custom cd and .. commands
@@ -121,6 +125,14 @@ alias ssha="eval $(ssh-agent) && ssh-add"
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 zstyle ':completion:*' menu select
+
+# Additional PATH exports
+export PATH="$HOME/bin:$PATH"
 export PATH=$PATH:$HOME/go/bin
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+# Python environment management with pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

@@ -11,4 +11,16 @@ api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- Auto-load project-specific .nvim.lua files
+api.nvim_create_autocmd("VimEnter", {
+	desc = "Load project-specific .nvim.lua configuration",
+	group = api.nvim_create_augroup("bm-project-config", { clear = true }),
+	callback = function()
+		local project_config = vim.fn.getcwd() .. "/.nvim.lua"
+		if vim.fn.filereadable(project_config) == 1 then
+			vim.cmd("luafile " .. project_config)
+		end
+	end,
+})
+
 -- remove keymap for `n` in normal mode

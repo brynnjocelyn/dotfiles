@@ -13,7 +13,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export LANG=en_US.UTF-8
 
 # Set name of the theme to load
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"

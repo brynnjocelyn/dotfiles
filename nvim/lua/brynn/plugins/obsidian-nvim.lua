@@ -2,18 +2,14 @@ return {
 	"epwalsh/obsidian.nvim",
 	version = "*", -- recommended, use latest release instead of latest commit
 	lazy = true,
-	-- ft = "markdown",
-	-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+	-- Only load for markdown files in Obsidian vault directories if they exist
 	event = {
-		-- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		-- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-		--[[ "BufReadPre "
-			.. vim.fn.expand("~")
-			.. "/obsidian/brain-valut/**.md",
-		"BufNewFile " .. vim.fn.expand("~") .. "/obsidian/brain-valut/**.md", ]]
-		"BufNewFile *.md",
-		"BufRead *.md",
+		-- Load conditionally based on file path
+		"BufReadPre */obsidian/*/**.md",
+		"BufNewFile */obsidian/*/**.md",
 	},
+	-- Use cmd to allow manual loading if needed
+	cmd = { "ObsidianOpen", "ObsidianNew", "ObsidianQuickSwitch", "ObsidianSearch" },
 	dependencies = {
 		-- Required.
 		"nvim-lua/plenary.nvim",
@@ -24,37 +20,56 @@ return {
 		-- see below for full list of optional dependencies 👇
 	},
 
-  -- Optional, override the default behavior of opening a file when clicking on it in the index.
-  ui = { enable = false },
 
-	-- Optional, completion of wiki links, local markdown files, and tags using nvim-cmp.
-	completion = {
-		-- Set to false to disable completion.
-		nvim_cmp = true,
-		-- Trigger completion at 2 chars.
-		min_chars = 2,
-	},
+	config = function()
+		-- Check if any Obsidian vaults exist before configuring
+		local function get_available_workspaces()
+			local workspaces = {}
 
-	-- Define templates for new files.
-	templates = {
-		folder = "~/obsidian/brain-vault/templates",
-		date_format = "%Y-%m-%d-%a",
-		time_format = "%H:%M",
-	},
+			-- Check for the main vault
+			local main_vault = vim.fn.expand("~/obsidian/brain-vault")
+			if vim.fn.isdirectory(main_vault) == 1 then
+				table.insert(workspaces, {
+					name = "personal",
+					path = main_vault,
+				})
+			end
 
-	-- Optional: specify the workspace directories
-	opts = {
-		workspaces = {
-			{
-				name = "personal",
-				path = "~/obsidian/brain-vault",
-			},
-			--[[ {
-				name = "work",
-				path = "~/obsidian/",
-			} ]]
-		},
+			-- You can add more vault checks here in the future
+			-- Example:
+			-- local work_vault = vim.fn.expand("~/work-obsidian")
+			-- if vim.fn.isdirectory(work_vault) == 1 then
+			--   table.insert(workspaces, { name = "work", path = work_vault })
+			-- end
 
-		-- see below for full list of options 👇
-	},
+			return workspaces
+		end
+
+		local workspaces = get_available_workspaces()
+
+		-- Only setup the plugin if we have at least one valid workspace
+		if #workspaces > 0 then
+			require("obsidian").setup({
+				workspaces = workspaces,
+
+				-- Optional, completion of wiki links, local markdown files, and tags using nvim-cmp.
+				completion = {
+					nvim_cmp = true,
+					min_chars = 2,
+				},
+
+				-- Define templates for new files (only if main vault exists)
+				templates = workspaces[1] and {
+					folder = workspaces[1].path .. "/templates",
+					date_format = "%Y-%m-%d-%a",
+					time_format = "%H:%M",
+				} or nil,
+
+				ui = { enable = false },
+			})
+		else
+			-- Graceful fallback: create a minimal setup or disable the plugin
+			vim.notify("Obsidian.nvim: No valid vault directories found. Plugin disabled.", vim.log.levels.WARN)
+		end
+	end,
 }

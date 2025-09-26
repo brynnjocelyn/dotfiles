@@ -6,8 +6,8 @@ return {
     config = function()
       local lint = require("lint")
 
-      lint.linters_by_ft = {
-        lua = { "luacheck" },
+      -- Build linters list based on available tools
+      local linters_by_ft = {
         python = { "pylint" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
@@ -18,6 +18,13 @@ return {
         json = { "jsonlint" },
         ansible = { "ansible-lint" },
       }
+
+      -- Only add Lua linter if Lua is available
+      if vim.fn.executable("lua") == 1 then
+        linters_by_ft.lua = { "luacheck" }
+      end
+
+      lint.linters_by_ft = linters_by_ft
 
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 

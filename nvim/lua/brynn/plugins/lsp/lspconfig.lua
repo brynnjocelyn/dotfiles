@@ -13,12 +13,10 @@ return {
 		},
 	},
 	config = function()
-		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
-		local util = require("lspconfig.util")
-
 		-- import cmp-nvim-lsp plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local lspconfig = require("lspconfig")
+		local util = require("lspconfig.util")
 
 		local keymap = vim.keymap -- for conciseness
 
@@ -93,17 +91,26 @@ return {
 			},
 		})
 
-		-- configure html server
-		lspconfig["html"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		-- Helper function to setup LSP servers with compatibility
+		local function setup_lsp_server(server_name, config)
+			config = config or {}
+			config.capabilities = capabilities
+			config.on_attach = on_attach
 
-		-- configure typescript server with plugin
-		lspconfig["ts_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+			-- Use vim.lsp.config if available (Neovim 0.11+), otherwise use lspconfig
+			if vim.lsp.config then
+				vim.lsp.config(server_name, config)
+				vim.lsp.enable(server_name)
+			else
+				lspconfig[server_name].setup(config)
+			end
+		end
+
+		-- configure html server
+		setup_lsp_server("html")
+
+		-- configure typescript server
+		setup_lsp_server("ts_ls")
 
 		-- configure typescript server with plugin
 		require("typescript-tools").setup({
@@ -129,15 +136,10 @@ return {
 		})
 
 		-- configure css server
-		lspconfig["cssls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("cssls")
 
 		-- configure tailwindcss server
-		lspconfig["tailwindcss"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		setup_lsp_server("tailwindcss", {
 			settings = {
 				tailwindCSS = {
 					lint = {
@@ -154,48 +156,31 @@ return {
 		})
 
 		-- configure svelte server
-		lspconfig["svelte"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("svelte")
 
 		-- configure prisma orm server
-		lspconfig["prismals"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("prismals")
 
 		-- configure graphql language server
-		lspconfig["graphql"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		setup_lsp_server("graphql", {
 			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 		})
 
 		-- configure emmet language server
-		lspconfig["emmet_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		setup_lsp_server("emmet_ls", {
 			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 		})
 
 		-- configure python server
-		lspconfig["pyright"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("pyright")
 
 		-- configure angular server
-		lspconfig["angularls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		setup_lsp_server("angularls", {
 			filetypes = { "typescript", "typescriptreact", "html", "typescript.tsx" },
 		})
 
 		-- configure lua server (with special settings)
-		lspconfig["lua_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		setup_lsp_server("lua_ls", {
 			settings = { -- custom settings for lua
 				Lua = {
 					-- make the language server recognize "vim" global
@@ -213,36 +198,30 @@ return {
 			},
 		})
 
-		-- configure go server
-		lspconfig["gopls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			cmd = { "gopls", "serve" },
-			filetypes = { "go", "gomod", "gowork", "gotmpl" },
-			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-			settings = {
-				gopls = {
-					analyses = {
-						unusedparams = true,
+		-- configure go server (only if Go is available)
+		if vim.fn.executable("go") == 1 then
+			setup_lsp_server("gopls", {
+				cmd = { "gopls", "serve" },
+				filetypes = { "go", "gomod", "gowork", "gotmpl" },
+				root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+						},
+						staticcheck = true,
+						gofumpt = true,
+						completeUnimported = true,
+						usePlaceholders = true,
 					},
-					staticcheck = true,
-					gofumpt = true,
-					completeUnimported = true,
-					usePlaceholders = true,
 				},
-			},
-		})
+			})
+		end
 
 		-- configure mdx server
-		lspconfig["mdx_analyzer"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("mdx_analyzer")
 
 		-- configure marksman server
-		lspconfig["marksman"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		setup_lsp_server("marksman")
 	end,
 }

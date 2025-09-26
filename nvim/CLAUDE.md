@@ -18,11 +18,13 @@ When adding or modifying plugins:
 4. Check for errors with `:messages`
 
 ### Adding New Language Support
-1. Add LSP server to `ensure_installed` in `lua/brynn/plugins/lsp/mason.lua`
+1. Add LSP server to `available_servers` list in `lua/brynn/plugins/lsp/mason.lua`
 2. Configure server in `lua/brynn/plugins/lsp/lspconfig.lua` (most use default config)
-3. Add formatters/linters to mason-tool-installer list
+3. Add formatters/linters to `available_tools` list in mason-tool-installer section
 4. Configure formatter in `formatting.lua` and linter in `linting.lua`
 5. Run `:MasonInstallAll` to install new tools
+
+**Note**: The configuration automatically detects available system dependencies (Go, Lua, etc.) and only installs compatible tools to avoid installation failures.
 
 ## High-Level Architecture
 
@@ -35,13 +37,30 @@ The configuration uses lazy.nvim's event-based loading to optimize startup time:
 - **Cmd**: Command-specific plugins (UndoTree, Lazy itself)
 
 ### LSP Integration Pattern
-All LSP servers share a common configuration pattern:
+All LSP servers share a common configuration pattern (Neovim 0.11+):
 ```lua
-lspconfig[server_name].setup({
+vim.lsp.config(server_name, {
   capabilities = capabilities,  -- from cmp_nvim_lsp
   on_attach = on_attach,       -- common keybindings function
   -- server-specific settings here
 })
+vim.lsp.enable(server_name)
+```
+
+For backwards compatibility with Neovim 0.10 and earlier, a helper function handles both APIs:
+```lua
+local function setup_lsp_server(server_name, config)
+  config = config or {}
+  config.capabilities = capabilities
+  config.on_attach = on_attach
+
+  if vim.lsp.config then
+    vim.lsp.config(server_name, config)
+    vim.lsp.enable(server_name)
+  else
+    require('lspconfig')[server_name].setup(config)
+  end
+end
 ```
 
 The `on_attach` function (lspconfig.lua:10-77) sets up buffer-local keybindings that are consistent across all language servers.

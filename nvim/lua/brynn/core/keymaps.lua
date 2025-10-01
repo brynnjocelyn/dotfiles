@@ -6,8 +6,19 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps -------------------
 
--- unbind "n" keymaps in normal mode
--- keymap.del("n", "n") -- unbind "n" keymap
+-- ensure search navigation works correctly
+keymap.set("n", "n", "n", { desc = "Next search match" }) -- restore normal 'n' behavior for search
+keymap.set("n", "N", "N", { desc = "Previous search match" }) -- ensure 'N' behavior is explicit
+
+-- Create autocmd to ensure search navigation is preserved after all plugins load
+vim.api.nvim_create_autocmd("VimEnter", {
+	desc = "Restore search navigation keymaps after all plugins load",
+	callback = function()
+		-- Ensure 'n' and 'N' are properly mapped for search navigation
+		keymap.set("n", "n", "n", { desc = "Next search match", silent = true })
+		keymap.set("n", "N", "N", { desc = "Previous search match", silent = true })
+	end,
+})
 
 -- show keymaps
 keymap.set("n", "<leader>?", "<cmd>Telescope keymaps<CR>", { desc = "Show keymaps" }) -- show keymaps

@@ -13,65 +13,73 @@ return {
 		},
 	},
 	config = function()
+		-- Note: lspconfig utility functions are no longer needed with vim.lsp.config
+		-- The new API handles root directory detection automatically
+
 		-- import cmp-nvim-lsp plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local lspconfig = require("lspconfig")
-		local util = require("lspconfig.util")
 
 		local keymap = vim.keymap -- for conciseness
 
-		local opts = { noremap = true, silent = true }
-		local on_attach = function(client, bufnr)
-			opts.buffer = bufnr
+		-- Use LspAttach autocmd to set up keybindings when LSP attaches to buffer
+		vim.api.nvim_create_autocmd('LspAttach', {
+			callback = function(ev)
+				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				local bufnr = ev.buf
+				local opts = { noremap = true, silent = true, buffer = bufnr }
 
-			-- set keybinds
-			opts.desc = "Show LSP references"
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+				-- set keybinds
+				opts.desc = "Show LSP references"
+				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-			opts.desc = "Go to declaration"
-			keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+				opts.desc = "Go to declaration"
+				keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-			opts.desc = "Show LSP definitions"
-			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				opts.desc = "Show LSP definitions"
+				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
-			opts.desc = "Show LSP implementations"
-			keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+				opts.desc = "Show LSP implementations"
+				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
 
-			opts.desc = "Show LSP type definitions"
-			keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+				opts.desc = "Show LSP type definitions"
+				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
-			opts.desc = "See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				opts.desc = "See available code actions"
+				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
-			opts.desc = "Smart rename"
-			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
+				opts.desc = "Smart rename"
+				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
-			opts.desc = "Show buffer diagnostics"
-			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				opts.desc = "Show buffer diagnostics"
+				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
-			opts.desc = "Show line diagnostics"
-			keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				opts.desc = "Show line diagnostics"
+				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
-			opts.desc = "Go to previous diagnostic"
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				opts.desc = "Go to previous diagnostic"
+				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
 
-			opts.desc = "Go to next diagnostic"
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				opts.desc = "Go to next diagnostic"
+				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
-			opts.desc = "Show documentation for what is under cursor"
-			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				opts.desc = "Show documentation for what is under cursor"
+				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 
-			opts.desc = "Restart LSP"
-			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+				opts.desc = "Restart LSP"
+				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-			-- Remove unused imports keybind
-			opts.desc = "Remove unused imports"
-			keymap.set("n", "<leader>ru", ":TSToolsRemoveUnused<CR>", opts)
+				-- TypeScript-specific keybinds (only set for typescript-tools client)
+				if client.name == "typescript-tools" then
+					-- Remove unused imports keybind
+					opts.desc = "Remove unused imports"
+					keymap.set("n", "<leader>ru", ":TSToolsRemoveUnused<CR>", opts)
 
-			-- Add missing imports keybind
-			opts.desc = "Add missing imports"
-			keymap.set("n", "<leader>ai", ":TSToolsAddMissing<CR>", opts)
-		end
+					-- Add missing imports keybind
+					opts.desc = "Add missing imports"
+					keymap.set("n", "<leader>ai", ":TSToolsAddMissing<CR>", opts)
+				end
+			end,
+		})
 
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -91,32 +99,22 @@ return {
 			},
 		})
 
-		-- Helper function to setup LSP servers with compatibility
-		local function setup_lsp_server(server_name, config)
-			config = config or {}
-			config.capabilities = capabilities
-			config.on_attach = on_attach
-
-			-- Use vim.lsp.config if available (Neovim 0.11+), otherwise use lspconfig
-			if vim.lsp.config then
-				vim.lsp.config(server_name, config)
-				vim.lsp.enable(server_name)
-			else
-				lspconfig[server_name].setup(config)
-			end
-		end
-
 		-- configure html server
-		setup_lsp_server("html")
+		vim.lsp.config('html', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('html')
 
 		-- configure typescript server
-		setup_lsp_server("ts_ls")
+		vim.lsp.config('ts_ls', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('ts_ls')
 
-		-- configure typescript server with plugin
+		-- configure typescript-tools plugin (enhanced TypeScript support)
 		require("typescript-tools").setup({
 			server = {
 				capabilities = capabilities,
-				on_attach = on_attach,
 				settings = {
 					tsserver_file_preferences = {
 						disableSuggestions = true,
@@ -136,10 +134,14 @@ return {
 		})
 
 		-- configure css server
-		setup_lsp_server("cssls")
+		vim.lsp.config('cssls', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('cssls')
 
 		-- configure tailwindcss server
-		setup_lsp_server("tailwindcss", {
+		vim.lsp.config('tailwindcss', {
+			capabilities = capabilities,
 			settings = {
 				tailwindCSS = {
 					lint = {
@@ -154,33 +156,50 @@ return {
 				},
 			},
 		})
+		vim.lsp.enable('tailwindcss')
 
 		-- configure svelte server
-		setup_lsp_server("svelte")
+		vim.lsp.config('svelte', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('svelte')
 
 		-- configure prisma orm server
-		setup_lsp_server("prismals")
+		vim.lsp.config('prismals', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('prismals')
 
 		-- configure graphql language server
-		setup_lsp_server("graphql", {
+		vim.lsp.config('graphql', {
+			capabilities = capabilities,
 			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 		})
+		vim.lsp.enable('graphql')
 
 		-- configure emmet language server
-		setup_lsp_server("emmet_ls", {
+		vim.lsp.config('emmet_ls', {
+			capabilities = capabilities,
 			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 		})
+		vim.lsp.enable('emmet_ls')
 
 		-- configure python server
-		setup_lsp_server("pyright")
+		vim.lsp.config('pyright', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('pyright')
 
 		-- configure angular server
-		setup_lsp_server("angularls", {
+		vim.lsp.config('angularls', {
+			capabilities = capabilities,
 			filetypes = { "typescript", "typescriptreact", "html", "typescript.tsx" },
 		})
+		vim.lsp.enable('angularls')
 
 		-- configure lua server (with special settings)
-		setup_lsp_server("lua_ls", {
+		vim.lsp.config('lua_ls', {
+			capabilities = capabilities,
 			settings = { -- custom settings for lua
 				Lua = {
 					-- make the language server recognize "vim" global
@@ -197,31 +216,37 @@ return {
 				},
 			},
 		})
+		vim.lsp.enable('lua_ls')
 
-		-- configure go server (only if Go is available)
-		if vim.fn.executable("go") == 1 then
-			setup_lsp_server("gopls", {
-				cmd = { "gopls", "serve" },
-				filetypes = { "go", "gomod", "gowork", "gotmpl" },
-				root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-				settings = {
-					gopls = {
-						analyses = {
-							unusedparams = true,
-						},
-						staticcheck = true,
-						gofumpt = true,
-						completeUnimported = true,
-						usePlaceholders = true,
+		-- configure go server
+		vim.lsp.config('gopls', {
+			capabilities = capabilities,
+			cmd = { "gopls", "serve" },
+			filetypes = { "go", "gomod", "gowork", "gotmpl" },
+			settings = {
+				gopls = {
+					analyses = {
+						unusedparams = true,
 					},
+					staticcheck = true,
+					gofumpt = true,
+					completeUnimported = true,
+					usePlaceholders = true,
 				},
-			})
-		end
+			},
+		})
+		vim.lsp.enable('gopls')
 
 		-- configure mdx server
-		setup_lsp_server("mdx_analyzer")
+		vim.lsp.config('mdx_analyzer', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('mdx_analyzer')
 
 		-- configure marksman server
-		setup_lsp_server("marksman")
+		vim.lsp.config('marksman', {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable('marksman')
 	end,
 }

@@ -2,6 +2,25 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## IMPORTANT: Agent Delegation for Neovim Tasks
+
+When asked to make changes, updates, or troubleshoot issues related to this Neovim configuration, you should ALWAYS use the `neovim-expert` agent via the Task tool. This specialized agent has deep expertise in:
+- Neovim configuration and plugin management
+- Resolving plugin conflicts and compatibility issues
+- Optimizing performance and startup times
+- Debugging LSP and treesitter configurations
+- Managing keybinding conflicts
+- Updating deprecated APIs and migration to newer Neovim versions
+
+Examples of tasks to delegate to neovim-expert:
+- Adding or configuring new plugins
+- Fixing broken configurations or plugin errors
+- Resolving LSP issues
+- Optimizing startup performance
+- Updating deprecated plugin syntax
+- Setting up language-specific configurations
+- Troubleshooting keybinding conflicts
+
 ## Neovim Configuration Commands
 
 ### Configuration Development

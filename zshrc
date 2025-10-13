@@ -89,7 +89,26 @@ fi
 # Nested tmux sessions cause issues with copy/paste and keybinding contexts.
 if [[ "$OSTYPE" == "darwin"* ]]; then
   if [ -z "$TMUX" ]; then
-    tmux attach-session -t default || tmux new-session -s default
+    if ! tmux list-sessions &>/dev/null; then
+      # No sessions exist, auto-create default session
+      tmux new-session -s default
+    else
+      # Sessions exist - show prompt for multi-monitor workflow
+      echo "Active tmux sessions: $(tmux list-sessions -F '#{session_name}' | tr '\n' ' ')"
+      echo -n "Session name (Enter=default, new=create unnamed): "
+      read -r choice
+
+      if [ -z "$choice" ]; then
+        # Attach to default or create it
+        tmux attach-session -t default 2>/dev/null || tmux new-session -s default
+      elif [ "$choice" = "new" ]; then
+        # Create new unnamed session
+        tmux new-session
+      else
+        # Attach to named session or create it
+        tmux attach-session -t "$choice" 2>/dev/null || tmux new-session -s "$choice"
+      fi
+    fi
   fi
 fi
 
@@ -146,6 +165,7 @@ alias gaa="git add --all"
 alias gus="git restore --staged" #Git Unstage followed by file name(s)
 
 alias ssha="eval $(ssh-agent) && ssh-add"
+alias fixmouse="printf '\033[?1000l'"
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 

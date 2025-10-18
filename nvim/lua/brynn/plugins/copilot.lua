@@ -59,7 +59,13 @@ return {
         workspace_folders = {}, -- Add paths like "/home/user/projects" if needed
         copilot_model = "", -- Default is gpt-35-turbo; set to "gpt-4o-copilot" if desired
         root_dir = function()
-          return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
+          -- Find .git directory by searching upward from current buffer
+          local git_root = vim.fs.find(".git", { upward = true, path = vim.fn.expand("%:p:h") })[1]
+          if git_root then
+            return vim.fs.dirname(git_root)
+          end
+          -- Fallback to current working directory if no .git found
+          return vim.fn.getcwd()
         end,
         should_attach = function(_, _)
           if not vim.bo.buflisted then

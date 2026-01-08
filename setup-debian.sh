@@ -54,7 +54,7 @@ install_core_tools() {
     sudo apt install -y \
         curl wget git build-essential cmake pkg-config \
         libtool autoconf automake unzip tar gzip \
-        ripgrep fd-find fzf bat exa tmux zsh \
+        ripgrep fd-find fzf bat eza tmux zsh \
         python3 python3-pip python3-venv python3-dev \
         luajit luarocks cargo rustc \
         zsh-autosuggestions zsh-syntax-highlighting

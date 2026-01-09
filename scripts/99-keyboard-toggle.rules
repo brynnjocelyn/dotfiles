@@ -1,0 +1,5 @@
+# Disable internal keyboard when Keychron is connected
+# Install to: /etc/udev/rules.d/99-keyboard-toggle.rules
+# Then run: sudo udevadm control --reload-rules && sudo udevadm trigger
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="3434", RUN+="/home/jocelynk/.local/bin/toggle-internal-keyboard.sh"
+ACTION=="remove", SUBSYSTEM=="usb", ATTR{idVendor}=="3434", RUN+="/home/jocelynk/.local/bin/toggle-internal-keyboard.sh"

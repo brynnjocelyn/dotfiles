@@ -159,6 +159,7 @@ bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 
 #ALIAS
+alias la='LC_COLLATE=C ls -lAh'
 alias gst="git status"
 alias gco="git checkout"
 alias gaa="git add --all"

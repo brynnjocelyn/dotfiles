@@ -193,3 +193,8 @@ fpath=(/Users/brynnjknight/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# Start Hyprland with uwsm on TTY login (Linux only)
+if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$XDG_VTNR" -eq 1 ]] && command -v uwsm &>/dev/null; then
+    exec uwsm start hyprland.desktop
+fi

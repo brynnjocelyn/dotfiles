@@ -1,0 +1,13 @@
+[Unit]
+Description=Restic backup to Minio
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/restic-backup
+Nice=19
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=default.target

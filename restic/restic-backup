@@ -1,0 +1,30 @@
+#!/bin/bash
+# Restic backup script for home directory
+
+set -e
+
+# Load credentials
+source ~/.config/restic/env
+
+# Notify start (if notify-send available)
+command -v notify-send &>/dev/null && notify-send "Backup" "Starting backup..."
+
+# Run backup
+restic backup \
+    --exclude-file ~/.config/restic/excludes.txt \
+    --exclude-caches \
+    --one-file-system \
+    --verbose \
+    ~
+
+# Prune old snapshots (keep last 7 daily, 4 weekly, 6 monthly)
+restic forget \
+    --keep-daily 7 \
+    --keep-weekly 4 \
+    --keep-monthly 6 \
+    --prune
+
+# Notify completion
+command -v notify-send &>/dev/null && notify-send "Backup" "Backup completed successfully"
+
+echo "Backup completed at $(date)"

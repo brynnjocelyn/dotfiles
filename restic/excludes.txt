@@ -1,0 +1,53 @@
+# Cache directories
+.cache
+.npm/_cacache
+.cargo/registry
+.local/share/Trash
+
+# Node modules (can be reinstalled)
+node_modules
+
+# Build artifacts
+.gradle
+.m2/repository
+target
+dist
+build
+.next
+.nuxt
+
+# IDE caches
+.idea
+.vscode-server
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+.Xauthority
+
+# Large media (optional - remove if you want these backed up)
+# *.iso
+# *.mp4
+# *.mkv
+
+# Python virtual environments
+venv
+.venv
+__pycache__
+*.pyc
+
+# Go build cache
+go/pkg
+
+# Docker
+.docker/buildx
+
+# Syncthing internals
+.stfolder
+.stversions
+
+# Thumbnails and previews
+.thumbnails
+.local/share/recently-used.xbel
